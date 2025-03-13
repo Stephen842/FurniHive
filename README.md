@@ -1,4 +1,4 @@
-__Chi Tech E-Commerce Furniture Store__
+# Chi Tech E-Commerce Furniture Store
 
 A simple furniture E-Commerce store built using Django for the backend and HTML and Tailwind CSS for the frontend. This project is designed to showcase furniture products with a minimalistic approach—no authentication, no cart system, just a clean product display with a WhatsApp toggle for direct inquiries.
 
