@@ -16,7 +16,7 @@ Features
 
 __Tech Stack__
 
-    1. Backend: Django (Python)
+*    1. Backend: Django (Python)
 
     2. Frontend: Tailwind CSS (HTML, CSS)
 
@@ -30,7 +30,7 @@ __Installation & Setup__
 
         cd chitech_interior
     
-    2. Create a Virtual Environment & Activate It
+*    2. Create a Virtual Environment & Activate It
 
         python -m venv venv
 
@@ -44,15 +44,15 @@ __Installation & Setup__
 
                 source venv/bin/activate
 
-    3. Install Dependencies
+*    3. Install Dependencies
 
         pip install -r requirements.txt
 
-    4. Apply Migrations
+*    4. Apply Migrations
 
         python manage.py migrate
 
-    5. Run the Development Server
+*    5. Run the Development Server
 
         python manage.py runserver
 
