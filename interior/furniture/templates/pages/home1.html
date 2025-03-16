@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 {% load widget_tweaks %}
 <!DOCTYPE html>
 <html lang="en">
@@ -70,7 +71,7 @@
 
         <main class="px-4 md:px-8 lg:px-16">
             <!-- Header Section -->
-            <div class="flex justify-center items-center mt-40 md:mt-32 lg:mt-28 mb-12 text-center">
+            <div class="flex justify-center items-center mt-40 md:mt-32 lg:mt-36 mb-12 text-center">
                 <h2 class="text-4xl md:text-5xl font-baloo font-bold leading-tight">
                     Explore what <br class="hidden md:block"> Your Home Needs
                 </h2>
@@ -129,10 +130,49 @@
             <!-- Popular Section -->
             <div class="relative mt-12">
                 <h2 class="mb-6 text-2xl font-bold font-['Baloo_2']">Popular</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-6">
+                    {% for product in featured_products %}
+                        <div class="bg-gray-200 rounded-2xl shadow-sm relative space-y-3 p-3">
+                            <!-- Product Image -->
+                            <a href="{% url 'product-detail' product.category.first.slug product.slug %}">
+                                <img src="{{ product.image_0.url }}" alt="{{ product.name }}" class="w-full h-80 object-cover rounded-lg">
+                            </a>
+                        
+                            <!-- Category -->
+                            {% if product.category.exists %}
+                                <p class="text-xs text-gray-500 font-semibold uppercase px-3">{{ product.category.first.name }}</p>
+                            {% else %}
+                                <p class="text-xs text-gray-500">None</p>
+                            {% endif %}
+                        
+                            <!-- Product Name -->
+                            <a href="{% url 'product-detail' product.category.first.slug product.slug %}">
+                                <h2 class="text-lg font-semibold text-gray-800 px-3">{{ product.name }}</h2>
+                            </a>
+                        
+                            <!-- Pricing -->
+                            <a href="{% url 'product-detail' product.category.first.slug product.slug %}">
+                                <h2 class="text-md px-3 pb-6">
+                                    {% if product.discount_price %}
+                                        <!-- <span class="line-through text-gray-400">₦{{ product.discount_price|intcomma }}</span> -->
+                                        <span class="text-red-500 font-bold">₦{{ product.price|intcomma }}</span>
+                                    {% else %}
+                                        <span class="font-bold text-gray-900">₦{{ product.price|intcomma }}</span>
+                                    {% endif %}
+                                </h2>
+                            </a>
+                        
+                            <!-- Floating Plus Button -->
+                            <button class="absolute bottom-6 right-2 bg-pink-100 hover:bg-pink-200 text-yellow-500 px-5 py-5 rounded-xl transition font-semibold text-2xl shadow-md">
+                                +
+                            </button>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         
             <!-- Banner Section -->
-            <div class="relative flex justify-center">
+            <div class="relative flex justify-center mt-12">
                 <img src="{% static 'banner-1.jpg' %}" alt="Banner" class="rounded-xl shadow-lg w-full max-w-6xl object-cover">
         
                 <div class="absolute inset-0 flex flex-col justify-center px-6 md:px-12">

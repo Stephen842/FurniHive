@@ -33,8 +33,8 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField(unique=True, blank=True, null=True)  # SEO-friendly URL
-    price = models.DecimalField(max_digits=15, decimal_places=2, default=0.00)
-    discount_price = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True)
+    price = models.IntegerField(default=0)
+    discount_price = models.IntegerField(blank=True, null=True)
     category = models.ManyToManyField(Category, related_name='products')
     description = models.TextField()
     condition = models.CharField(max_length=20, blank=True, null=True)
@@ -59,6 +59,8 @@ class Product(models.Model):
     image_0 = models.ImageField(upload_to='products/')
     image_1 = models.ImageField(upload_to='products/', blank=True, null=True)
     image_2 = models.ImageField(upload_to='products/', blank=True, null=True)
+    image_3 = models.ImageField(upload_to='products/', blank=True, null=True)
+
 
     def __str__(self):
         return self.name

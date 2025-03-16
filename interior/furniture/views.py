@@ -5,8 +5,8 @@ from .models import Product, Category
 
 def Store(request):
     categories = Category.objects.all()
-    featured_products = Product.objects.order_by('-id')[:8]  # Show latest 4 products
 
+    featured_products = Product.objects.filter(featured=True).order_by('?')[:12]
     context = {
         'categories': categories,
         'featured_products': featured_products,

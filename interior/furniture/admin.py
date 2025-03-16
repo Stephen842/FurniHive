@@ -17,7 +17,7 @@ class CategoryAdmin(admin.ModelAdmin):
 class ProductsAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'slug', 'price', 'stock_availability', 'featured')
     search_fields = ('name', 'slug', 'category__name')
-    list_filter = ('category', 'stock_availability', 'featured')
+    list_filter = ('stock_availability', 'featured')
     ordering = ('name',)
 
     filter_horizontal = ('category',)
