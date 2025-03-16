@@ -1,0 +1,53 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Furniture Store</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <title> {{ title }} </title>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <h1>Welcome to Our Furniture Store</h1>
+        <p>Find the perfect furniture for your home.</p>
+    </header>
+
+    <!-- Categories Section -->
+    <section class="categories">
+        <h2>Browse by Category</h2>
+        <div class="category-list">
+            {% for category in categories %}
+                <a href="{% url 'category_products' category.slug %}" class="category-card">
+                    {{ category.name }}
+                </a>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="products">
+        <h2>Latest Products</h2>
+        <div class="product-grid">
+            {% for product in featured_products %}
+                <div class="product-card">
+                    <img src="{{ product.image_0.url }}" alt="{{ product.name }}">
+                    <h3>{{ product.name }}</h3>
+                    <p>${{ product.price }}</p>
+                    <a href="{% url 'product_detail' product.category.slug product.slug %}">View Details</a>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/+2348074625742" class="whatsapp-button">
+        <img src="https://cdn-icons-png.flaticon.com/128/220/220236.png" alt="WhatsApp" style="width: 45px; height: 45px;">
+    </a>
+
+</body>
+</html>
