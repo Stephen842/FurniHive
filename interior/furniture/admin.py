@@ -15,10 +15,12 @@ class CategoryAdmin(admin.ModelAdmin):
 
 # Register Product Model in Admin Panel
 class ProductsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'slug', 'price', 'category', 'stock_availability', 'featured')
+    list_display = ('id', 'name', 'slug', 'price', 'stock_availability', 'featured')
     search_fields = ('name', 'slug', 'category__name')
     list_filter = ('category', 'stock_availability', 'featured')
     ordering = ('name',)
+
+    filter_horizontal = ('category',)
 
     prepopulated_fields = {'slug': ('name',)}  # Auto-generate slug in admin panel
 

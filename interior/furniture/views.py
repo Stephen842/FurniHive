@@ -5,15 +5,15 @@ from .models import Product, Category
 
 def Store(request):
     categories = Category.objects.all()
-    featured_products = Product.objects.order_by('-id')[:4]  # Show latest 4 products
+    featured_products = Product.objects.order_by('-id')[:8]  # Show latest 4 products
 
     context = {
         'categories': categories,
         'featured_products': featured_products,
-        'title': 'HELLO'
+        'title': 'FurniHive – Redefining Interior Luxury'
     } 
 
-    return render(request, 'pages/home.html', context)
+    return render(request, 'pages/home1.html', context)
 
 
 def Product_detail(request, category_slug, product_slug):

@@ -35,7 +35,7 @@ class Product(models.Model):
     slug = models.SlugField(unique=True, blank=True, null=True)  # SEO-friendly URL
     price = models.DecimalField(max_digits=15, decimal_places=2, default=0.00)
     discount_price = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
+    category = models.ManyToManyField(Category, related_name='products')
     description = models.TextField()
     condition = models.CharField(max_length=20, blank=True, null=True)
     color = models.CharField(max_length=20, blank=True, null=True)
