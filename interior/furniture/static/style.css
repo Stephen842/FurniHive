@@ -25,52 +25,6 @@ body {
     max-width: 100%; /* Prevents content overflow */
 }
 
-/** .hero {
-    background-color: #f8f8f8;
-    padding: 50px;
-}
-
-.categories {
-    margin: 20px 0;
-}
-
-.category-list {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
-
-.category-card {
-    padding: 10px 20px;
-    background-color: #333;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-}
-
-.products {
-    margin: 30px 0;
-}
-
-.product-grid {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-.product-card {
-    border: 1px solid #ddd;
-    padding: 15px;
-    width: 200px;
-}
-
-.whatsapp-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-}
-    **/
-
 :root {
     --bg-color: #f3f4f6;
     --text-color: #333333;
@@ -79,4 +33,10 @@ body {
 [data-theme="dark"] {
     --bg-color: #333333;
     --text-color: white;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Magnolia:wght@400&display=swap');
+
+.magnolia-font {
+    font-family: "Magnolia", cursive;
 }
