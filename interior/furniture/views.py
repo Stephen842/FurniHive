@@ -14,7 +14,7 @@ def Store(request):
         'title': 'FurniHive – Redefining Interior Luxury'
     } 
 
-    return render(request, 'pages/home1.html', context)
+    return render(request, 'pages/home.html', context)
 
 
 def Product_detail(request, category_slug, product_slug):
@@ -31,7 +31,7 @@ def Product_detail(request, category_slug, product_slug):
 
 def Category_products(request, category_slug):
     categories = get_object_or_404(Category, slug=category_slug)
-    products = Product.objects.filter(category=category)
+    products = Product.objects.filter(category=categories)
 
     context = {
         'category': categories,
