@@ -66,9 +66,19 @@
                             <i class='bx bxs-cart mr-2'></i> Cart
                         </button>
         
-                        <button class="flex items-center bg-black hover:bg-gray-700 px-4 py-3 rounded-xl transition font-semibold text-white font-baloo shadow-md">
-                            Log In/Sign Up
-                        </button>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'logout' %}">
+                                <button class="flex items-center bg-black hover:bg-gray-700 px-4 py-3 rounded-xl transition font-semibold text-white font-baloo shadow-md">
+                                    Log Out
+                                </button>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'signin' %}">
+                                <button class="flex items-center bg-black hover:bg-gray-700 px-4 py-3 rounded-xl transition font-semibold text-white font-baloo shadow-md">
+                                    Log In/Sign Up
+                                </button>
+                            </a>
+                        {% endif %}
         
                         <button id="modeSwitch" class="p-2 w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-200 transition flex items-center justify-center mt-1 shadow-md">
                             <i id="themeIcon" class="bi bi-moon-stars"></i>
@@ -133,42 +143,50 @@
             <div class="mt-12 md:mt-40 mb-12">
                 {% if category.slug == "chairs" %}
                     <div class="relative rounded-2xl overflow-hidden shadow-lg">
+                        <h2><a href="/"><i class="bi bi-arrow-left absolute top-4 left-12 text-white text-xl md:text-3xl font-bold z-10"></i></a></h2>
                         <img src="{% static 'category-chairs.jpg' %}" alt="Chairs" class="w-full h-44 object-cover transition-transform duration-500 hover:scale-105"/>
                         <h2 class="absolute inset-0 flex items-center ml-12 text-white text-xl md:text-5xl font-bold font-['Baloo_2'] hover:text-yellow-300"> Chairs </h2>
                     </div>
                 {% elif category.slug == "sofa" %}
                     <div class="relative rounded-2xl overflow-hidden shadow-lg">
+                        <h2><a href="/"><i class="bi bi-arrow-left absolute top-4 left-12 text-white text-xl md:text-3xl font-bold z-10"></i></a></h2>
                         <img src="{% static 'category-sofas.jpg' %}" alt="Sofas" class="w-full h-44 object-cover transition-transform duration-500 hover:scale-105"/>
                         <h2 class="absolute inset-0 flex items-center ml-12 text-white text-xl md:text-5xl font-bold font-['Baloo_2'] hover:text-yellow-300"> Sofas </h2>
                     </div>
                 {% elif category.slug == "desks" %}
                     <div class="relative rounded-2xl overflow-hidden shadow-lg">
+                        <h2><a href="/"><i class="bi bi-arrow-left absolute top-4 left-12 text-white text-xl md:text-3xl font-bold z-10"></i></a></h2>
                         <img src="{% static 'category-desks.jpg' %}" alt="Desks" class="w-full h-44 object-cover transition-transform duration-500 hover:scale-105"/>
                         <h2 class="absolute inset-0 flex items-center ml-12 text-white text-xl md:text-5xl font-bold font-['Baloo_2'] hover:text-yellow-300"> Desks </h2>
                     </div>
                 {% elif category.slug == "wardrobe" %}
                     <div class="relative rounded-2xl overflow-hidden shadow-lg">
+                        <h2><a href="/"><i class="bi bi-arrow-left absolute top-4 left-12 text-white text-xl md:text-3xl font-bold z-10"></i></a></h2>
                         <img src="{% static 'category-wardrobes.jpg' %}" alt="Wardrobes" class="w-full h-44 object-cover transition-transform duration-500 hover:scale-105"/>
                         <h2 class="absolute inset-0 flex items-center ml-12 text-white text-xl md:text-5xl font-bold font-['Baloo_2'] hover:text-yellow-300"> Wardrobes/Cabinet </h2>
                     </div>
                 {% elif category.slug == "living-room" %}
                     <div class="h-48 bg:gray-200 relative rounded-2xl overflow-hidden shadow-md ">
-                        <h2 class="mt-12 ml-12 text-xl md:text-5xl font-bold font-['Baloo_2'] hover:text-yellow-300"> Living Room </h2>
+                        <h2><a href="/"><i class="bi bi-arrow-left absolute top-4 left-12 text-xl md:text-3xl font-bold z-10"></i></a></h2>
+                        <h2 class="mt-12 ml-12 md:mt-14 text-xl md:text-5xl font-bold font-['Baloo_2'] hover:text-yellow-300"> Living Room </h2>
                         <p class="ml-12 mt-6"> Stop dreaming about the perfect living room – create one with our furniture </p>
                     </div>
                 {% elif category.slug == "bedroom" %}
                     <div class="h-48 bg:gray-200 relative rounded-2xl overflow-hidden shadow-md ">
-                        <h2 class="mt-12 ml-12 text-xl md:text-5xl font-bold font-['Baloo_2'] hover:text-yellow-300"> Bed Room </h2>
+                        <h2><a href="/"><i class="bi bi-arrow-left absolute top-4 left-12 text-xl md:text-3xl font-bold z-10"></i></a></h2>
+                        <h2 class="mt-12 ml-12 md:mt-14 text-xl md:text-5xl font-bold font-['Baloo_2'] hover:text-yellow-300"> Bed Room </h2>
                         <p class="ml-12 mt-6"> Use our furniture to create a perfect bedroom that will suit your sleeping habits </p>
                     </div>
                 {% elif category.slug == "kitchendinning" %}
                     <div class="h-48 bg:gray-200 relative rounded-2xl overflow-hidden shadow-md ">
-                        <h2 class="mt-12 ml-12 text-xl md:text-5xl font-bold font-['Baloo_2'] hover:text-yellow-300"> Kitchen/Dinning </h2>
+                        <h2><a href="/"><i class="bi bi-arrow-left absolute top-4 left-12 text-xl md:text-3xl font-bold z-10"></i></a></h2>
+                        <h2 class="mt-12 ml-12 md:mt-14 text-xl md:text-5xl font-bold font-['Baloo_2'] hover:text-yellow-300"> Kitchen/Dinning </h2>
                         <p class="ml-12 mt-6"> Create an appetizing Kitchen - dining room for your next family dinner from scratch </p>
                     </div>
                 {% elif category.slug == "office" %}
                     <div class="h-48 bg:gray-200 relative rounded-2xl overflow-hidden shadow-md ">
-                        <h2 class="mt-12 ml-12 text-xl md:text-5xl font-bold font-['Baloo_2'] hover:text-yellow-300"> Office </h2>
+                        <h2><a href="/"><i class="bi bi-arrow-left absolute top-4 left-12 text-xl md:text-3xl font-bold z-10"></i></a></h2>
+                        <h2 class="mt-12 ml-12 md:mt-14 text-xl md:text-5xl font-bold font-['Baloo_2'] hover:text-yellow-300"> Office </h2>
                         <p class="ml-12 mt-6"> Best solutions for your home office </p>
                     </div>
                 {% else %}

@@ -64,9 +64,19 @@
                             <i class='bx bxs-cart mr-2'></i> Cart
                         </button>
         
-                        <button class="flex items-center bg-black hover:bg-gray-700 px-4 py-3 rounded-xl transition font-semibold text-white font-baloo shadow-md">
-                            Log In/Sign Up
-                        </button>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'logout' %}">
+                                <button class="flex items-center bg-black hover:bg-gray-700 px-4 py-3 rounded-xl transition font-semibold text-white font-baloo shadow-md">
+                                    Log Out
+                                </button>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'signin' %}">
+                                <button class="flex items-center bg-black hover:bg-gray-700 px-4 py-3 rounded-xl transition font-semibold text-white font-baloo shadow-md">
+                                    Log In/Sign Up
+                                </button>
+                            </a>
+                        {% endif %}
         
                         <button id="modeSwitch" class="p-2 w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-200 transition flex items-center justify-center mt-1 shadow-md">
                             <i id="themeIcon" class="bi bi-moon-stars"></i>
@@ -139,7 +149,7 @@
                     <!-- Product Info -->
                     <div class="md:w-1/2 mt-4 space-y-6">
                         <h1 class="text-4xl font-bold text-gray-900">{{ product.name }}</h1>
-                        <p class="text-lg leading-relaxed">{{ product.description|safe }}</p>
+                        <p class="text-lg text-gray-800 leading-relaxed">{{ product.description|safe }}</p>
             
                         <!-- Product Details -->
                         <div class="bg-gray-100 p-4 rounded-lg shadow-inner">

@@ -1,0 +1,220 @@
+{% load static %}
+{% load humanize %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv = 'X-UA-Compatible' content = 'IE=edge'>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv='content-type' content='text/html; charset = utf-8'/>
+        <meta name = 'robots' content = 'index, follow'>
+
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon_io/apple-touch-icon.png' %}">
+        <link rel="icon" sizes="192x192" href="{% static 'favicon_io/android-chrome-192x192.png' %}">
+        <link rel="icon" sizes="256x256" href="{% static 'favicon_io/android-chrome-512x512.png' %}">
+        <link rel="icon" type="image/x-icon" href="{% static 'favicon_io/favicon.ico' %}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon_io/favicon-32x32.png' %}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon_io/favicon-16x16.png' %}">
+        <link rel="manifest" href="{% static 'favicon_io/site.webmanifest' %}">
+
+        <link rel = 'stylesheet' href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
+        <link rel = 'stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css'>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Magnolia+Script&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
+
+
+        <!-- TailwindCSS Compilation -->
+        <link rel="stylesheet" href="{% static 'src/styles.css' %}">
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+
+        <title> {{title}} </title>
+    </head>
+
+    <body>
+        <header>
+            <!-- Top Navbar (Hidden on Small Screens) -->
+            <div class="fixed top-0 left-0 w-full bg-white dark:bg-gray-900 shadow-md z-50 hidden md:block rounded-b-lg">
+                <div class="flex items-center justify-between p-4 rounded-xl">
+                    <!-- Logo & Brand Name -->
+                    <div class="flex items-center space-x-3 group">
+                        <a href="/" class="relative flex flex-col items-center">
+                            <img src="{% static 'chitech_logo.png' %}" alt="Chi Tech Logo" class="h-16 w-auto">
+
+                            <h2 class="text-sm font-bold transform bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 text-transparent bg-clip-text magnolia-font">
+                                FurniHive
+                            </h2>                              
+                        </a>
+                    </div>
+        
+                    <!-- Search Bar -->
+                    <div class="relative flex items-center w-1/3 lg:w-2/4">
+                        <form method='GET' action="{% url 'search' %}" class="w-full">
+                            <input type="text" name='q' placeholder="What are you looking for?" class="w-full h-12 px-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-200 transition-all">
+                            <button class="absolute right-2 bg-gray-900 text-white px-4 py-1 mt-2 rounded-xl hover:bg-gray-700 transition">
+                                🔍
+                            </button>
+                        </form>
+                    </div>
+        
+                    <!-- Cart, Auth Buttons & Theme -->
+                    <div class="flex space-x-4">
+                        <button class="flex items-center bg-pink-100 hover:bg-pink-200 text-yellow-400 px-4 py-3 rounded-xl transition font-semibold text-lg font-baloo shadow-md">
+                            <i class='bx bxs-cart mr-2'></i> Cart
+                        </button>
+        
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'logout' %}">
+                                <button class="flex items-center bg-black hover:bg-gray-700 px-4 py-3 rounded-xl transition font-semibold text-white font-baloo shadow-md">
+                                    Log Out
+                                </button>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'signin' %}">
+                                <button class="flex items-center bg-black hover:bg-gray-700 px-4 py-3 rounded-xl transition font-semibold text-white font-baloo shadow-md">
+                                    Log In/Sign Up
+                                </button>
+                            </a>
+                        {% endif %}
+        
+                        <button id="modeSwitch" class="p-2 w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-200 transition flex items-center justify-center mt-1 shadow-md">
+                            <i id="themeIcon" class="bi bi-moon-stars"></i>
+                        </button>
+                    </div>
+                </div>
+                <hr/>
+            </div>
+
+            <!--Small screeen top header view-->
+            <div class="top-0 left-0 w-full bg-white dark:bg-gray-900 shadow-md md:hidden rounded-b-lg">
+                <div class="flex items-center justify-between p-4 rounded-xl">
+                    <!-- Brand Logo -->
+                    <div class="flex items-center space-x-3 group">
+                        <a href="/" class="relative flex flex-col items-center">
+                            <img src="{% static 'chitech_logo.png' %}" alt="Chi Tech Logo" class="h-16 w-auto">
+
+                            <h2 class="text-sm font-bold transform bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 text-transparent bg-clip-text magnolia-font">
+                                FurniHive
+                            </h2>                              
+                        </a>
+                    </div>
+        
+                    <!-- Search Bar -->
+                    <div class="relative flex items-center w-2/3">
+                        <form method='GET' action="{% url 'search' %}" class="w-full">
+                            <input type="text" name='q' placeholder="Search here..." class="w-full h-12 px-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-200 transition-all">
+                            <button class="absolute right-2 bg-gray-900 text-white px-4 py-1 mt-2 rounded-xl hover:bg-gray-700 transition">
+                                🔍
+                            </button>
+                        </form>
+                    </div>
+        
+                    <!-- Theme -->
+                    <div class="flex space-x-4">
+                        <button id="modeSwitch" class="p-2 w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-200 transition flex items-center justify-center mt-1 shadow-md">
+                            <i id="themeIcon" class="bi bi-moon-stars"></i>
+                        </button>
+                    </div>
+                </div>
+                <hr/>
+            </div>
+        
+            <!-- Bottom Navbar (Visible on Small Screens) -->
+            <div class="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-900 shadow-md z-50 flex justify-around items-center p-3 md:hidden">
+                <a href="#" class="flex flex-col items-center text-yellow-500">
+                    <i class="bx bx-home text-2xl"></i>
+                    <span class="text-xs">Home</span>
+                </a>
+                <a href="#" class="flex flex-col items-center text-gray-500">
+                    <i class="bx bx-cart text-2xl"></i>
+                    <span class="text-xs">Cart</span>
+                </a>
+                <a href="#" class="flex flex-col items-center text-gray-500">
+                    <i class="bx bx-user text-2xl"></i>
+                    <span class="text-xs">Profile</span>
+                </a>
+            </div>
+        </header>
+
+        <div class="mt-12 md:mt-40 mb-12">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {% for product in products %}
+                    <div class="bg-gray-200 rounded-2xl shadow-sm relative space-y-3 p-3">
+                        <!-- Product Image -->
+                        <a href="{% url 'product-detail' product.category.first.slug product.slug %}">
+                            <img src="{{ product.image_0.url }}" alt="{{ product.name }}" class="w-full h-80 object-cover rounded-lg">
+                        </a>
+                    
+                        <!-- Category -->
+                        {% if product.category.exists %}
+                            <p class="text-xs text-gray-500 font-semibold uppercase px-3">{{ product.category.first.name }}</p>
+                        {% else %}
+                            <p class="text-xs text-gray-500">None</p>
+                        {% endif %}
+                    
+                        <!-- Product Name -->
+                        <a href="{% url 'product-detail' product.category.first.slug product.slug %}">
+                            <h2 class="text-lg font-semibold text-gray-800 px-3">{{ product.name }}</h2>
+                        </a>
+                    
+                        <!-- Pricing -->
+                        <a href="{% url 'product-detail' product.category.first.slug product.slug %}">
+                            <h2 class="text-md px-3 pb-6">
+                                {% if product.discount_price %}
+                                    <!-- <span class="line-through text-gray-400">₦{{ product.discount_price|intcomma }}</span> -->
+                                    <span class="text-red-500 font-bold">₦{{ product.price|intcomma }}</span>
+                                {% else %}
+                                    <span class="font-bold text-gray-900">₦{{ product.price|intcomma }}</span>
+                                {% endif %}
+                            </h2>
+                        </a>
+                    
+                        <!-- Floating Plus Button -->
+                        <button class="absolute bottom-6 right-2 bg-pink-100 hover:bg-pink-200 text-yellow-500 px-5 py-5 rounded-xl transition font-semibold text-2xl shadow-md">
+                            +
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- WhatsApp Floating Button 
+        <a href="https://wa.me/+2348074625742" class="whatsapp-button" target="_blank">
+            <img src="https://cdn-icons-png.flaticon.com/128/220/220236.png" alt="WhatsApp" class="fixed bottom-5 right-5 text-white p-2 rounded-full shadow-lg transition duration-300" style="width: 70px; height: 70px;">
+        </a>
+    -->
+        <footer class="mt-10 px-6 md:px-16">
+            <div class="flex flex-col md:flex-row items-center justify-between w-full py-4 text-center md:text-left">
+                <!-- Social Icons (Centered on Small, Left on Medium & Large) -->
+                <div class="flex space-x-6 mb-3 md:mb-0">
+                    <a href="https://github.com/stephen842" target="_blank">
+                        <i class="bi bi-github text-2xl hover:text-gray-500 transition"></i>
+                    </a>
+        
+                    <a href="https://www.linkedin.com/in/ugota-c-stephen-6b1846306" target="_blank">
+                        <i class="bi bi-linkedin text-2xl hover:text-gray-500 transition"></i>
+                    </a>
+        
+                    <a href="https://wa.me/+2348074625742" target="_blank">
+                        <i class="bi bi-whatsapp text-2xl hover:text-gray-500 transition"></i>
+                    </a>
+                </div>
+        
+                <!-- Copyright (Centered on Small, Stays in Middle on Medium & Large) -->
+                <div class="text-sm w-full text-center font-bold font-['Baloo_2']">
+                    <h2>&copy; FurniHive | {% now "Y" %}</h2>
+                </div>
+        
+                <!-- PythoGenius (Centered on Small, Right on Medium & Large) -->
+                <div class=" hidden md:flex md:mt-0">
+                    <h2 class="text-red-500 hover:text-red-600 text-sm font-bold font-['Baloo_2']">PythoGenius</h2>
+                </div>
+            </div>
+        </footer>
+        <!--This script is an extension of the themeswitcher for the page bg switching-->
+        <script src="{% static 'js/background_switch.js' %}"></script>
+</body>
+<html>

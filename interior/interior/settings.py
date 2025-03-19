@@ -46,6 +46,15 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
 ]
 
+AUTHENTICATION_BACKENDS = [
+    #This is for the custom Auth backend for the Chat App
+    'furniture.BackendAuth.CustomAuthBackend',
+
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+AUTH_USER_MODEL = "furniture.MyUsers"
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -142,6 +151,10 @@ STORAGES = {
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = '/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
