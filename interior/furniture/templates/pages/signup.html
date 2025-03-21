@@ -42,14 +42,20 @@
                 <p class="text-gray-600 mb-6 text-center md:text-left">Sign Up to explore our features</p>
     
                 <form method="POST" class="space-y-5">
-                    {% if messages %}
-                        <div class="text-center text-red-500 font-bold">
-                            {% for message in messages %}
-                                <p>{{ message }}</p>
-                            {% endfor %}
+                    {% if form.errors %}
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Oops! Something went wrong:</strong>
+                            <ul class="mt-2 list-disc list-inside">
+                                {% for field, errors in form.errors.items %}
+                                    {% for error in errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
                         </div>
                     {% endif %}
     
+                    {% csrf_token %}
                     <div>
                         <label class="block text-gray-700 font-medium">Full Name</label>
                         {{ form.name|add_class:"w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-yellow-300"}}
@@ -72,7 +78,7 @@
     
                     <div>
                         <label class="block text-gray-700 font-medium">Phone Number</label>
-                        {{ form.phone|add_class:"w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-yellow-300"}}
+                        {{ form.phone|attr:"placeholder = Begin with a country code"|add_class:"w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-yellow-300"}}
                     </div>
     
                     <div>
