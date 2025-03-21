@@ -32,9 +32,15 @@ class UserForm(forms.ModelForm):
         if len(name) < 8:
             raise forms.ValidationError('Name must be 8 characters long or more')
         return name
+    
+    def clean_username(self):
+        username = self.cleaned_data.get('username').lower()  # Convert to lowercase
+        if MyUsers.objects.filter(username=username).exists():
+            raise forms.ValidationError('Username already taken.')
+        return username
 
     def clean_email(self):
-        email = self.cleaned_data.get('email')
+        email = self.cleaned_data.get('email').lower() # Convert to lowercase
         if len(email) < 8:
             raise forms.ValidationError('Email address must be 8 characters long')
         if MyUsers.objects.filter(email=email).exists():
@@ -87,14 +93,8 @@ class SigninForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
 
     def clean_identifier(self):
-        cleaned_data = super().clean()
-        identifier = cleaned_data.get('identifier')
-        password = cleaned_data.get('password')
-
-        if identifier and password:
-            # Authenticate the user
-            user = authenticate(username=identifier, password=password)
-            if not user:
-                raise ValidationError("Invalid credentials. Please try again.")
-
-        return cleaned_data
+        """Ensure identifier (username or email) is stored in lowercase."""
+        identifier = self.cleaned_data.get('identifier')
+        if identifier:
+            return identifier.lower()  # Convert to lowercase for case insensitivity
+        return identifier

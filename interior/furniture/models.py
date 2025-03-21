@@ -63,6 +63,12 @@ class MyUsers(AbstractBaseUser, PermissionsMixin):  # Add PermissionsMixin here
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name', 'username', 'country', 'phone']
 
+    def save(self, *args, **kwargs):
+        """Ensure username and email are stored in lowercase"""
+        self.email = self.email.lower()
+        self.username = self.username.lower()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
+from django.contrib.auth import get_user_model, login as auth_login, authenticate, logout as auth_logout
 from django.contrib.auth.hashers import  make_password
 from django.db.models import Q, Count
 from .models import Product, Category
@@ -11,10 +11,8 @@ def signup(request):
     if request.method == "POST":
         form = UserForm(request.POST)
         if form.is_valid():
-            customer = form.save(commit=False)
-            customer.password = make_password(customer.password)
-            customer.save()
-            return redirect('store')
+            form.save() # Password is already hashed in the form
+            return redirect(request.GET.get('next', 'store'))
     else:
         form = UserForm()
 
@@ -34,11 +32,12 @@ def signin(request):
             identifier = form.cleaned_data['identifier']
             password = form.cleaned_data['password']
 
-            # Authenticate user
+            # Try authenticating by username or email
             user = authenticate(request, username=identifier, password=password)
+            
             if user:
                 auth_login(request, user)
-                return redirect('store')
+                return redirect(request.GET.get('next', 'store'))
             else:
                 form.add_error(None, "Invalid credentials. Please try again.")
 
