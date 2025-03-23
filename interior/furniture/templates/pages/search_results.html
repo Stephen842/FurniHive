@@ -62,9 +62,12 @@
         
                     <!-- Cart, Auth Buttons & Theme -->
                     <div class="flex space-x-4">
-                        <button class="flex items-center bg-pink-100 hover:bg-pink-200 text-yellow-400 px-4 py-3 rounded-xl transition font-semibold text-lg font-baloo shadow-md">
-                            <i class='bx bxs-cart mr-2'></i> Cart
-                        </button>
+                        <a href="{% url 'cart' %}" class="relative inline-block">
+                            <button class="flex items-center bg-pink-100 hover:bg-pink-200 text-yellow-400 px-4 py-3 rounded-xl transition font-semibold text-lg font-baloo shadow-md" id="cart-count">
+                                <span class="absolute -top-2 -left-2 bg-yellow-400 text-gray-600 text-sm font-bold px-2 py-1 rounded-full">{{ cart_count }}</span>
+                                <i class='bx bxs-cart mr-2'></i> Cart
+                            </button>
+                        </a>
         
                         {% if user.is_authenticated %}
                             <a href="{% url 'logout' %}">
@@ -142,6 +145,7 @@
         <div class="mt-12 md:mt-40 mb-12">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {% for product in products %}
+                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
                     <div class="bg-gray-200 rounded-2xl shadow-sm relative space-y-3 p-3">
                         <!-- Product Image -->
                         <a href="{% url 'product-detail' product.category.first.slug product.slug %}">
@@ -173,7 +177,7 @@
                         </a>
                     
                         <!-- Floating Plus Button -->
-                        <button class="absolute bottom-6 right-2 bg-pink-100 hover:bg-pink-200 text-yellow-500 px-5 py-5 rounded-xl transition font-semibold text-2xl shadow-md">
+                        <button type="button" data-product-id="{{ product.id }}" data-action="add" class="cart-action-btn absolute bottom-6 right-2 bg-pink-100 hover:bg-pink-200 text-yellow-500 px-5 py-5 rounded-xl transition font-semibold text-2xl shadow-md">
                             +
                         </button>
                     </div>
@@ -216,5 +220,6 @@
         </footer>
         <!--This script is an extension of the themeswitcher for the page bg switching-->
         <script src="{% static 'js/background_switch.js' %}"></script>
+        <script src="{% static 'js/cart.js' %}"></script>
 </body>
 <html>

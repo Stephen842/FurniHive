@@ -178,3 +178,24 @@ class Product(models.Model):
         if category_id:
             return Product.objects.filter(category=category_id)
         return Product.get_all_products()
+
+
+class CartItem(models.Model):
+    user = models.ForeignKey(MyUsers, on_delete=models.CASCADE, null=True, blank=True, related_name="cart_items")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
+    quantity = models.PositiveIntegerField(default=0)
+    shipping = models.CharField(
+        max_length=100,
+        choices=[
+            ('standard', 'Standard Delivery - $1 (3-5 business days)'),
+        ],
+        default='standard'
+    )
+
+    @property
+    def total_price(self):
+        # Assuming product price is stored as a string with commas, we convert to integer
+        return int(self.product.price.replace(',', '')) * self.quantity
+
+    def __str__(self):
+        return f"Cart for {self.user} {self.product} (x{self.quantity}) - {self.get_shipping_display() if self.user else 'No user'}"

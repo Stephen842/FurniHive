@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
-from .models import MyUsers
+from .models import MyUsers, CartItem
 
 class UserForm(forms.ModelForm):
     password1 = forms.CharField(
@@ -98,3 +98,9 @@ class SigninForm(forms.Form):
         if identifier:
             return identifier.lower()  # Convert to lowercase for case insensitivity
         return identifier
+
+
+class CartItemForm(forms.ModelForm):
+    class Meta:
+        model = CartItem
+        fields = ['shipping']

@@ -1,5 +1,6 @@
 from django.urls import path, include 
 from . import views
+from .views import Cart
 
 urlpatterns = [
     path('', views.Store, name='store'),
@@ -9,4 +10,6 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('signin/', views.signin, name='signin'),
     path('logout/', views.logout, name='logout'),
+    path("add-to-cart/", views.add_to_cart, name="add_to_cart"),
+    path('cart/', Cart.as_view(), name='cart'),
 ]

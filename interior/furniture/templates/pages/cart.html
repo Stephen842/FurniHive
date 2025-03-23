@@ -143,79 +143,92 @@
         </header>
 
         <main class="px-4 md:px-8 lg:px-16">
-            <!-- Header Section -->
-            <div class="flex justify-center items-center mt-12 md:mt-40 mb-12 text-center">
-                <h2 class="text-4xl md:text-5xl font-baloo font-bold leading-tight">
-                    Explore what <br class="hidden md:block"> Your Home Needs
-                </h2>
-            </div>
-        
-            <!-- Banner Section -->
-            <div class="relative flex justify-center">
-                <img src="{% static 'banner-2.jpg' %}" alt="Banner" class="rounded-xl shadow-lg w-full max-w-6xl object-cover">
-        
-                <div class="absolute inset-0 flex flex-col justify-center px-6 md:px-12">
-                    <h2 class="text-5xl md:text-6xl font-extrabold text-yellow-300 font-['Baloo_2']">Sale</h2>
-                    <h4 class="text-xl md:text-2xl font-semibold text-white font-['Baloo_2'] mt-2">
-                        All chairs up to <span class="text-red-500">25% off</span>
-                    </h4>
-                    <a href="{% url 'category_products' 'chairs' %}" class="mt-3 text-lg font-semibold text-white hover:underline flex items-center">
-                        Learn more →
-                    </a>
+            <div class="mt-12 md:mt-40 mb-12">
+                <div class="h-48 bg:gray-200 relative rounded-2xl overflow-hidden shadow-md flex items-center">
+                    <h2><a href="/"><i class="bi bi-arrow-left absolute top-4 left-12 text-xl md:text-4xl font-bold z-10"></i></a></h2>
+                    <h2 class="ml-12 text-xl md:text-5xl font-bold font-['Baloo_2'] hover:text-yellow-300"> Cart </h2>
                 </div>
             </div>
+            <div>
+                <section class="w-full mt-30 mb-12">
+                    <div class="container mx-auto px-4 py-8">
+                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                        {% if cart_items %}
+                        <div class="flex flex-col lg:flex-row gap-8">
+                            <!-- Shopping Cart Section -->
+                            <div class="bg-white shadow-xl w-full lg:w-2/3 rounded-lg p-6">
+                                <div class="flex justify-between items-center mb-6 border-b pb-4">
+                                    <h2 class="text-xl font-semibold text-gray-800">Shopping Cart</h2>
+                                    <span class="text-gray-600">Items: {{ cart_items|length }}</span>
+                                </div>
+                                {% for item in cart_items %}
+                                <div class="flex items-center justify-between border-b py-4">
+                                    <!-- Product Image -->
+                                    <div class="w-1/4">
+                                        <a href="{% url 'product-detail' item.product.category.first.slug item.product.slug  %}">
+                                            <img src="{{ item.product.image_0.url }}" alt="Product Image" class="rounded-lg w-full">
+                                        </a>
+                                    </div>
+                                    <!-- Product Info -->
+                                    <div class="w-1/2 px-4">
+                                        <h3 class="text-lg font-semibold text-gray-800">{{ item.product.name }}</h3>
+                                        <p class="text-sm text-gray-600">Size: {{ item.product.size }}, Color: {{ item.product.color }}</p>
+                                    </div>
+                                    <!-- Quantity Controls -->
+                                    <div class="flex items-center gap-4 w-1/4 z-index">
+                                        <button type="button" id="remove-from-cart-btn" data-product-id="{{ item.product.id }}" data-action="remove" class="cart-action-btn bg-gray-200 hover:bg-gray-300 rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold text-gray-800">−</button>
+                                        
+                                        <p class="text-gray-800">{{ item.quantity }}</p>
         
-            <!-- Categories Section -->
-            <div class="relative mt-12">
-                <h2 class="mb-6 text-2xl font-bold font-['Baloo_2']">Categories</h2>
-                <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    <!-- Chairs Category -->
-                    <a href="{% url 'category_products' 'chairs' %}" class="relative group">
-                        <div class="relative rounded-xl overflow-hidden shadow-lg">
-                            <img src="{% static 'category-chairs.jpg' %}" alt="Chairs" class="w-full h-48 md:h-56 object-cover transition-transform duration-500 hover:scale-105">
-                            <h2 class="absolute inset-0 flex items-center ml-4 text-white text-xl md:text-2xl font-bold font-['Baloo_2'] hover:text-yellow-300">
-                                Chairs
-                            </h2>
+                                        <button type="button" id="add-to-cart-btn" data-product-id="{{ item.product.id }}" data-action="add" class="cart-action-btn bg-gray-200 hover:bg-gray-300 rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold text-gray-800">+</button>
+                                    </div>
+                                    <!-- Product Price -->
+                                    <div>
+                                        <p class="text-lg font-semibold text-gray-800">₦{{ item.total_price|intcomma }}</p>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                    
+                            <!-- Summary Section -->
+                            <div class="bg-gray-100 shadow-xl w-full lg:w-1/3 rounded-lg p-6">
+                                <h2 class="text-xl font-semibold text-gray-800 mb-4">Order Summary</h2>
+                                <div class="flex justify-between items-center border-b pb-4 mb-4">
+                                    <p class="text-gray-600">Items Total: {{ cart_items|length }}</p>
+                                    <p class="text-gray-800 font-semibold">₦{{ subtotal|intcomma }}</p>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="shipping" class="block text-sm font-medium text-gray-700 mb-2">Shipping Options</label>
+                                    <div>
+                                        {{ form.shipping|add_class:"w-full rounded-md py-2 px-3 outline-none transition-all duration-300 text-gray-800 bg-white shadow-sm focus:ring-2" }}
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="coupon" class="block text-sm font-medium text-gray-700 mb-2">Coupon Code</label>
+                                    <input type="text" id="coupon" name="coupon" class="w-full rounded-md py-2 px-3 outline-none transition-all duration-300 text-gray-800 bg-white shadow-sm focus:ring-2" placeholder="Enter coupon code">
+                                </div>
+
+                                <div class="mt-6">
+                                    <a href="#" class="block bg-pink-100 hover:bg-pink-200 text-yellow-400 font-medium text-center py-3 rounded-xl transition font-semibold text-lg font-baloo shadow-md">
+                                        Proceed to Checkout
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                    </a>
-        
-                    <!-- Sofas Category -->
-                    <a href="{% url 'category_products' 'sofas' %}" class="relative group">
-                        <div class="relative rounded-xl overflow-hidden shadow-lg">
-                            <img src="{% static 'category-sofas.jpg' %}" alt="Sofas" class="w-full h-48 md:h-56 object-cover transition-transform duration-500 hover:scale-105">
-                            <h2 class="absolute inset-0 flex items-center ml-4 text-white text-xl md:text-2xl font-bold font-['Baloo_2'] hover:text-yellow-300">
-                                Sofas
-                            </h2>
+                        {% else %}
+                        <div class="text-center py-20">
+                            <h2 class="text-2xl font-semibold mb-4 font-baloo">Your Cart is Empty</h2>
+                            <button class="bg-pink-100 hover:bg-pink-200 text-yellow-400 px-4 py-3 rounded-xl transition font-semibold text-lg font-baloo shadow-md"><a href="/">Continue Shopping</a></button>
                         </div>
-                    </a>
-        
-                    <!-- Desks Category -->
-                    <a href="{% url 'category_products' 'desks' %}" class="relative group">
-                        <div class="relative rounded-xl overflow-hidden shadow-lg">
-                            <img src="{% static 'category-desks.jpg' %}" alt="Desks" class="w-full h-48 md:h-56 object-cover transition-transform duration-500 hover:scale-105">
-                            <h2 class="absolute inset-0 flex items-center ml-4 text-white text-xl md:text-2xl font-bold font-['Baloo_2'] hover:text-yellow-300">
-                                Desks
-                            </h2>
-                        </div>
-                    </a>
-        
-                    <!-- Wardrobes/Cabinets Category -->
-                    <a href="{% url 'category_products' 'wardrobe-cabinet' %}" class="relative group">
-                        <div class="relative rounded-xl overflow-hidden shadow-lg">
-                            <img src="{% static 'category-wardrobes.jpg' %}" alt="Wardrobes" class="w-full h-48 md:h-56 object-cover transition-transform duration-500 hover:scale-105">
-                            <h2 class="absolute inset-0 flex items-center ml-4 text-white text-xl md:text-2xl font-bold font-['Baloo_2'] hover:text-yellow-300">
-                                Wardrobes/Cabinet
-                            </h2>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        
-            <!-- Popular Section -->
-            <div class="relative mt-12">
-                <h2 class="mb-6 text-2xl font-bold font-['Baloo_2']">Popular</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {% for product in featured_products %}
+                        {% endif %}
+                    </div> 
+                </section>
+
+                <div class="mt-12">
+                    <h2 class="text-2xl font-semibold mb-4">Popular</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        
+                        {% for product in featured_products %}
                         <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
                         <div class="bg-gray-200 rounded-2xl shadow-sm relative space-y-3 p-3">
                             <!-- Product Image -->
@@ -252,85 +265,14 @@
                                 +
                             </button>
                         </div>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
-        
-            <!-- Banner Section -->
-            <div class="relative flex justify-center mt-12">
-                <img src="{% static 'banner-1.jpg' %}" alt="Banner" class="rounded-xl shadow-lg w-full max-w-6xl object-cover">
-        
-                <div class="absolute inset-0 flex flex-col justify-center px-6 md:px-12">
-                    <h2 class="text-5xl md:text-6xl font-extrabold text-yellow-300 font-['Baloo_2']">Sale</h2>
-                    <h4 class="text-xl md:text-2xl font-semibold text-white font-['Baloo_2'] mt-2">
-                        High quality sofas <span class="text-red-500">20% off</span>
-                    </h4>
-                    <a href="{% url 'category_products' 'sofa' %}" class="mt-3 text-lg font-semibold text-white hover:underline flex items-center">
-                        Learn more →
-                    </a>
-                </div>
-            </div>
-        
-            <!-- Rooms Section -->
-            <div class="relative mt-12">
-                <h2 class="mb-4 text-2xl font-bold font-['Baloo_2']">Rooms</h2>
-                <h2 class="mb-6 text-lg md:text-xl font-bold font-['Baloo_2']">Furniture for every corner in your home</h2>
-
-                <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    <!-- Living Room Category -->
-                    <a href="{% url 'category_products' 'living-room' %}" class="relative group">
-                        <div class="relative rounded-xl overflow-hidden shadow-lg group">
-                            <img src="{% static 'room-livingroom.jpg' %}" alt="room-livingroom" class="w-full h-48  md:w-72 md:h-96 object-cover transition-transform duration-500 group-hover:scale-105 group-hover:brightness-75">
-                            <div class="absolute inset-0"></div>
-                            <h2 class="absolute top-2 left-4 text-white text-xl md:text-2xl font-bold font-['Baloo_2'] transition duration-500 group-hover:text-red-500 whitespace-pre-line">
-                                Living 
-                                Room
-                            </h2>
-                        </div>
-                    </a>
-                
-                    <!-- Bed Room Category -->
-                    <a href="{% url 'category_products' 'bedroom' %}" class="relative group">
-                        <div class="relative rounded-xl overflow-hidden shadow-lg group">
-                            <img src="{% static 'room-bedroom.jpg' %}" alt="room-bedroom" class="w-full h-48 md:w-72 md:h-96 object-cover transition-transform duration-500 group-hover:scale-105 group-hover:brightness-75">
-                            <div class="absolute inset-0"></div>
-                            <h2 class="absolute top-2 left-4 text-white text-xl md:text-2xl font-bold font-['Baloo_2'] transition duration-500 group-hover:text-red-500 whitespace-pre-line">
-                                Bed
-                                Room
-                            </h2>
-                        </div>
-                    </a>
-                
-                    <!-- Kitchen/Dinning Category -->
-                    <a href="{% url 'category_products' 'kitchen-dinning' %}" class="relative group">
-                        <div class="relative rounded-xl overflow-hidden shadow-lg group">
-                            <img src="{% static 'room-diningroom.jpg' %}" alt="room-diningroom" class="w-full h-48 md:w-72 md:h-96 object-cover transition-transform duration-500 group-hover:scale-105 group-hover:brightness-75">
-                            <div class="absolute inset-0"></div>
-                            <h2 class="absolute top-2 left-4 text-white text-xl md:text-2xl font-bold font-['Baloo_2'] transition duration-500 group-hover:text-red-500 whitespace-pre-line">
-                                Kitchen/Dining 
-                            </h2>
-                        </div>
-                    </a>
-                
-                    <!-- Office Category -->
-                    <a href="{% url 'category_products' 'office' %}" class="relative group">
-                        <div class="relative rounded-xl overflow-hidden shadow-lg group">
-                            <img src="{% static 'room-office.jpg' %}" alt="room-office" class="w-full h-48 md:h-56 md:w-72 md:h-96 object-cover transition-transform duration-500 group-hover:scale-105 group-hover:brightness-75">
-                            <div class="absolute inset-0"></div>
-                            <h2 class="absolute top-2 left-4 text-white text-xl md:text-2xl font-bold font-['Baloo_2'] transition duration-500 group-hover:text-red-500 whitespace-pre-line">
-                                Office
-                            </h2>
-                        </div>
-                    </a>
-                </div>
-            </div>
-
-            <div class="relative mt-12 px-16">
 
             </div>
         </main>
 
-    <!-- WhatsApp Floating Button 
+        <!-- WhatsApp Floating Button 
         <a href="https://wa.me/+2348074625742" class="whatsapp-button" target="_blank">
             <img src="https://cdn-icons-png.flaticon.com/128/220/220236.png" alt="WhatsApp" class="fixed bottom-5 right-5 text-white p-2 rounded-full shadow-lg transition duration-300" style="width: 70px; height: 70px;">
         </a>
@@ -363,10 +305,8 @@
                 </div>
             </div>
         </footer>
-
         <!--This script is an extension of the themeswitcher for the page bg switching-->
         <script src="{% static 'js/background_switch.js' %}"></script>
         <script src="{% static 'js/cart.js' %}"></script>
-
     </body>
 <html>

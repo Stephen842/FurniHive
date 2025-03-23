@@ -29,8 +29,9 @@ urlpatterns = [
     path("__reload__/", include("django_browser_reload.urls")),
 ]
 
-#This is a flag for handling 404(Page not found) errors
+#This is a flag for handling 404(Page not found) and 500(Server Errors)errors
 #handler404 = 'furniture.views.error_404'
+#handler500 = 'shop.views.error_500'
 
 # Serve media files during development
 if settings.DEBUG:
