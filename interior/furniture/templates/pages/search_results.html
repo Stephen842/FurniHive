@@ -42,11 +42,7 @@
                     <!-- Logo & Brand Name -->
                     <div class="flex items-center space-x-3 group">
                         <a href="/" class="relative flex flex-col items-center">
-                            <img src="{% static 'chitech_logo.png' %}" alt="Chi Tech Logo" class="h-16 w-auto">
-
-                            <h2 class="text-sm font-bold transform bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 text-transparent bg-clip-text magnolia-font">
-                                FurniHive
-                            </h2>                              
+                            <img src="{% static 'furnihive.png' %}" alt="FurniHive Logo" class="h-16 w-auto">                            
                         </a>
                     </div>
         
@@ -95,31 +91,21 @@
             <div class="top-0 left-0 w-full bg-white dark:bg-gray-900 shadow-md md:hidden rounded-b-lg">
                 <div class="flex items-center justify-between p-4 rounded-xl">
                     <!-- Brand Logo -->
-                    <div class="flex items-center space-x-3 group">
+                    <div class="flex items-center space-x-2">
                         <a href="/" class="relative flex flex-col items-center">
-                            <img src="{% static 'chitech_logo.png' %}" alt="Chi Tech Logo" class="h-16 w-auto">
-
-                            <h2 class="text-sm font-bold transform bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 text-transparent bg-clip-text magnolia-font">
-                                FurniHive
-                            </h2>                              
+                            <img src="{% static 'furnihive.png' %}" alt="Furnihive Logo" class="h-16 w-auto">                     
                         </a>
                     </div>
-        
+                
                     <!-- Search Bar -->
-                    <div class="relative flex items-center w-2/3">
+                    <div class="relative flex items-center flex-grow mx-4">
                         <form method='GET' action="{% url 'search' %}" class="w-full">
                             <input type="text" name='q' placeholder="Search here..." class="w-full h-12 px-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-200 transition-all">
-                            <button class="absolute right-2 bg-gray-900 text-white px-4 py-1 mt-2 rounded-xl hover:bg-gray-700 transition">
+                            <button class="absolute right-2 top-2 -translate-y-1/2 bg-gray-900 text-white px-4 py-1 rounded-xl 
+                                hover:bg-gray-700 transition">
                                 🔍
                             </button>
                         </form>
-                    </div>
-        
-                    <!-- Theme -->
-                    <div class="flex space-x-4">
-                        <button id="modeSwitch" class="p-2 w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-200 transition flex items-center justify-center mt-1 shadow-md">
-                            <i id="themeIcon" class="bi bi-moon-stars"></i>
-                        </button>
                     </div>
                 </div>
                 <hr/>
@@ -127,18 +113,26 @@
         
             <!-- Bottom Navbar (Visible on Small Screens) -->
             <div class="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-900 shadow-md z-50 flex justify-around items-center p-3 md:hidden">
-                <a href="#" class="flex flex-col items-center text-yellow-500">
+                <a href="/" class="flex flex-col items-center text-yellow-500">
                     <i class="bx bx-home text-2xl"></i>
                     <span class="text-xs">Home</span>
                 </a>
-                <a href="#" class="flex flex-col items-center text-gray-500">
+                <a href="{% url 'cart' %}" class="relative flex flex-col items-center text-gray-500">
+                    <span class="absolute -top-2 -left-2 bg-yellow-400 text-gray-600 text-sm font-bold px-2 py-1 rounded-full">{{ cart_count }}</span>
                     <i class="bx bx-cart text-2xl"></i>
                     <span class="text-xs">Cart</span>
                 </a>
-                <a href="#" class="flex flex-col items-center text-gray-500">
-                    <i class="bx bx-user text-2xl"></i>
-                    <span class="text-xs">Profile</span>
-                </a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" class="flex flex-col items-center text-gray-500">
+                        <i class="bi bi-box-arrow-left"></i>
+                        <span class="text-xs">Log Out</span>
+                    </a>
+                {% else %}
+                    <a href="{% url 'signin' %}" class="flex flex-col items-center text-gray-500">
+                        <i class="bx bx-user text-2xl"></i>
+                        <span class="text-xs">Log In</span>
+                    </a>
+                {% endif %}    
             </div>
         </header>
 
@@ -220,6 +214,17 @@
         </footer>
         <!--This script is an extension of the themeswitcher for the page bg switching-->
         <script src="{% static 'js/background_switch.js' %}"></script>
+
         <script src="{% static 'js/cart.js' %}"></script>
+
+        <!--This function prevent right clicking on the mouse to view source file -->
+        <script>
+            document.addEventListener("contextmenu", event => event.preventDefault());
+            document.addEventListener("keydown", event => {
+                if (event.ctrlKey && (event.key === "u" || event.key === "U")) {
+                    event.preventDefault();
+                }
+            });
+        </script>
 </body>
 <html>
