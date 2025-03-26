@@ -51,7 +51,7 @@ class MyUsers(AbstractBaseUser, PermissionsMixin):  # Add PermissionsMixin here
     name = models.CharField(max_length=100, blank=False)
     username = models.CharField(max_length=100, unique=True, blank=False)
     email = models.EmailField(unique=True, blank=False)
-    phone = PhoneNumberField(region='NG', unique=True)
+    phone = PhoneNumberField(region='US', unique=True)
     country = CountryField(blank_label='Select Country',)
     
     is_active = models.BooleanField(default=True)
@@ -187,7 +187,7 @@ class CartItem(models.Model):
     shipping = models.CharField(
         max_length=100,
         choices=[
-            ('standard', 'Standard Delivery - $1 (3-5 business days)'),
+            ('standard', 'Standard Delivery - $2 (3-5 business days)'),
         ],
         default='standard'
     )
@@ -199,3 +199,39 @@ class CartItem(models.Model):
 
     def __str__(self):
         return f"Cart for {self.user} {self.product} (x{self.quantity}) - {self.get_shipping_display() if self.user else 'No user'}"
+
+
+#This is for the order model, where users fill the neccessary products they are ordering for and then the orders are been submitted
+class Order(models.Model):
+    my_user = models.ForeignKey(MyUsers, on_delete=models.CASCADE, null=True, blank=True)
+    products = models.ManyToManyField(Product, related_name="orders")
+    order_id = models.CharField(max_length=20, unique=True, null=True, blank=True)
+    quantity = models.IntegerField(default=1)
+    price = models.IntegerField()
+    state = models.CharField(max_length=50)
+    phone = PhoneNumberField(region='US')
+    country = CountryField(blank_label='Select Country',)
+    name = models.CharField(max_length=50)
+    email = models.EmailField()
+    city = models.CharField(max_length=50)
+    zipcode = models.CharField(max_length=20, blank=True)
+    date = models.DateField(auto_now_add=True)
+    paid = models.BooleanField(default=False)
+
+
+
+    def placeOrder(self):
+        self.save()
+
+    #To retrieve an order using User ID
+    @staticmethod
+    def get_orders_by_user(user_id):
+        return Order.objects.filter(my_user=user_id).order_by('-date')
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, related_name='order_items', on_delete=models.CASCADE)
+    product = models.ForeignKey('Product', on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()  # Store quantity per product
+
+    def __str__(self):
+        return f"{self.product.name} (x{self.quantity}) in Order {self.order.order_id}"

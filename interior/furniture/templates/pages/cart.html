@@ -178,7 +178,7 @@
                                     </div>
                                     <!-- Product Price -->
                                     <div>
-                                        <p class="text-lg font-semibold text-gray-800">₦{{ item.total_price|intcomma }}</p>
+                                        <p class="text-lg font-semibold text-gray-800">${{ item.total_price|intcomma }}</p>
                                     </div>
                                 </div>
                                 {% endfor %}
@@ -189,7 +189,7 @@
                                 <h2 class="text-xl font-semibold text-gray-800 mb-4">Order Summary</h2>
                                 <div class="flex justify-between items-center border-b pb-4 mb-4">
                                     <p class="text-gray-600">Items Total: {{ cart_items|length }}</p>
-                                    <p class="text-gray-800 font-semibold">₦{{ subtotal|intcomma }}</p>
+                                    <p class="text-gray-800 font-semibold">${{ subtotal|intcomma }}</p>
                                 </div>
                                 <div class="mb-4">
                                     <label for="shipping" class="block text-sm font-medium text-gray-700 mb-2">Shipping Options</label>
@@ -203,7 +203,7 @@
                                 </div>
 
                                 <div class="mt-6">
-                                    <a href="#" class="block bg-pink-100 hover:bg-pink-200 text-yellow-400 font-medium text-center py-3 rounded-xl transition font-semibold text-lg font-baloo shadow-md">
+                                    <a href="{% url 'checkout' %}" class="block bg-pink-100 hover:bg-pink-200 text-yellow-400 font-medium text-center py-3 rounded-xl transition font-semibold text-lg font-baloo shadow-md">
                                         Proceed to Checkout
                                     </a>
                                 </div>
@@ -247,9 +247,9 @@
                                 <h2 class="text-md px-3 pb-6">
                                     {% if product.discount_price %}
                                         <!-- <span class="line-through text-gray-400">₦{{ product.discount_price|intcomma }}</span> -->
-                                        <span class="text-red-500 font-bold">₦{{ product.price|intcomma }}</span>
+                                        <span class="text-red-500 font-bold">${{ product.price|intcomma }}</span>
                                     {% else %}
-                                        <span class="font-bold text-gray-900">₦{{ product.price|intcomma }}</span>
+                                        <span class="font-bold text-gray-900">${{ product.price|intcomma }}</span>
                                     {% endif %}
                                 </h2>
                             </a>

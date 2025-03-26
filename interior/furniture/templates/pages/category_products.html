@@ -218,9 +218,9 @@
                                 <h2 class="text-md px-3 pb-6">
                                     {% if product.discount_price %}
                                         <!-- <span class="line-through text-gray-400">₦{{ product.discount_price|intcomma }}</span> -->
-                                        <span class="text-red-500 font-bold">₦{{ product.price|intcomma }}</span>
+                                        <span class="text-red-500 font-bold">${{ product.price|intcomma }}</span>
                                     {% else %}
-                                        <span class="font-bold text-gray-900">₦{{ product.price|intcomma }}</span>
+                                        <span class="font-bold text-gray-900">${{ product.price|intcomma }}</span>
                                     {% endif %}
                                 </h2>
                             </a>

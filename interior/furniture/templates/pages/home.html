@@ -234,9 +234,9 @@
                                 <h2 class="text-md px-3 pb-6">
                                     {% if product.discount_price %}
                                         <!-- <span class="line-through text-gray-400">₦{{ product.discount_price|intcomma }}</span> -->
-                                        <span class="text-red-500 font-bold">₦{{ product.price|intcomma }}</span>
+                                        <span class="text-red-500 font-bold">${{ product.price|intcomma }}</span>
                                     {% else %}
-                                        <span class="font-bold text-gray-900">₦{{ product.price|intcomma }}</span>
+                                        <span class="font-bold text-gray-900">${{ product.price|intcomma }}</span>
                                     {% endif %}
                                 </h2>
                             </a>
@@ -259,7 +259,7 @@
                     <h4 class="text-xl md:text-2xl font-semibold text-white font-['Baloo_2'] mt-2">
                         High quality sofas <span class="text-red-500">20% off</span>
                     </h4>
-                    <a href="{% url 'category_products' 'sofa' %}" class="mt-3 text-lg font-semibold text-white hover:underline flex items-center">
+                    <a href="{% url 'category_products' 'sofas' %}" class="mt-3 text-lg font-semibold text-white hover:underline flex items-center">
                         Learn more →
                     </a>
                 </div>

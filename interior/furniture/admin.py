@@ -2,7 +2,7 @@ from django.contrib import admin
 from tinymce.widgets import TinyMCE
 from django.db import models
 from django.db.models import Q
-from .models import MyUsers, Category, Product
+from .models import MyUsers, Category, Product, Order, OrderItem
 
 # Register your models here.
 
@@ -52,6 +52,47 @@ class ProductsAdmin(admin.ModelAdmin):
         queryset |= self.model.objects.filter(Q(category__name__icontains=search_term))
 
         return queryset, use_distinct
+
+
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    extra = 1
+    readonly_fields = ('product', 'quantity',)
+
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('id', 'customer_name', 'date')
+    search_fields = ('id', 'customer_name')
+    inlines = [OrderItemInline] # To show OrderItems inside Order
+
+    def total_price(self, obj):
+        return f'${obj.price:.2f}' # TO display the price in dollars
+    
+    total_price.short_description = 'Total Price'
+
+    def customer_name(self, obj):
+        return obj.customer.name
+    customer_name.short_description = 'Customer Name'    
+
+    def display_products(self, obj):
+        return ', '.join([product.name for product in obj.products.all()])
+
+    display_products.short_description = 'Product'
+
+    def get_search_results(self, request, queryset, search_term):
+        queryset, use_distinct = super().get_search_results(request, queryset, search_term)
+        
+       # Search for orders where customer's name matches the search term
+        customer_orders = self.model.objects.filter(customer__name__icontains=search_term)
+
+        queryset |= customer_orders
+        return queryset.distinct(), use_distinct
+
+class OrderItemAdmin(admin.ModelAdmin):  # Separate Admin for OrderItem
+    list_display = ('order', 'product', 'quantity')
+    search_fields = ('order__order_id', 'product__name')
+
 admin.site.register(MyUsers, UserAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductsAdmin)
+admin.site.register(Order, OrderAdmin)
+admin.site.register(OrderItem, OrderItemAdmin)
