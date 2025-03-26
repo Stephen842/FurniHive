@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,6 +29,8 @@ SECRET_KEY = 'django-insecure-n&12rxbov8&te@+hatlpbtk2-w7jw%whsxpup&+39sv1x&q-3o
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+load_dotenv()
 
 
 # Application definition
@@ -44,6 +48,9 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'django_browser_reload',
     'django.contrib.humanize',
+    'phonenumber_field',
+    'django_countries',
+
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -161,3 +168,10 @@ LOGIN_REDIRECT_URL = '/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# This part for the integration of payment method(FlutterWave)
+FLUTTERWAVE_PUBLIC_KEY = os.getenv('FLUTTERWAVE_PUBLIC_KEY')
+FLUTTERWAVE_SECRET_KEY = os.getenv('FLUTTERWAVE_SECRET_KEY')
+FLUTTERWAVE_ENCRYPTION_KEY = os.getenv('FLUTTERWAVE_ENCRYPTION_KEY')
+FLUTTERWAVE_SECRET_HASH = os.getenv('FLUTTERWAVE_SECRET_HASH')
+FLUTTERWAVE_BASE_URL = 'https://api.flutterwave.com/v3'

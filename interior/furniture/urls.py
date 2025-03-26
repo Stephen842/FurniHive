@@ -1,6 +1,6 @@
 from django.urls import path, include 
 from . import views
-from .views import Cart, CheckOut
+from .views import Cart, CheckOut, VerifyPayment, OrderView
 
 urlpatterns = [
     path('', views.Store, name='store'),
@@ -13,5 +13,9 @@ urlpatterns = [
     path("add-to-cart/", views.add_to_cart, name="add_to_cart"),
     path('cart/', Cart.as_view(), name='cart'),
     path('checkout/', CheckOut.as_view(), name='checkout'),
-    #path('verify-payment/', VerifyPayment.as_view(), name='verify-payment'),
+    path('verify-payment/', VerifyPayment.as_view(), name='verify-payment'),
+    path('order-confirm/<str:order_id>/', views.Order_confirm, name='order-confirm'),
+    path('Payment-Failed/', views.Payment_failed, name='payment-failed'),
+    path('orders/', OrderView.as_view(), name='orders'),
+
 ]

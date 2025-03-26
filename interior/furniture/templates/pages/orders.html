@@ -142,23 +142,77 @@
             </div>
         </header>
 
-        <main class="px-4 md:px-8 lg:px-16">
-            <div class="flex items-center justify-center min-h-screen">
-                <div class="text-center">
-                    <h1 class='mb-2 text-2xl font-bold'>Order Successfully Placed</h1>
-                    <p class='mb-2'>We appreciate your purchase at FurniHive! Your order has been confirmed.</p>
-                    <div class="flex items-center justify-center mb-2">
-                        <a href="{% url 'orders' %}" class="block bg-pink-100 hover:bg-pink-200 text-yellow-400 font-medium text-center p-4 rounded-xl transition font-semibold text-lg font-baloo shadow-md"> View Your Orders </a>
+        <main>
+            <div class="flex items-center justify-center px-6 mt-36 mb-2">
+                <div class="bg-white shadow-lg rounded-lg max-w-3xl w-full p-6">
+                    <!-- Thank You Section -->
+                    <div class="text-center border-b pb-4">
+                        <h2 class="text-2xl font-bold text-gray-800">We Appreciate Your Order, {{ user.name }}!</h2>
+                        <p class="text-sm text-gray-600 mt-1">Thank you for shopping with us! Here are your order details:</p>
+                    </div>
+            
+                    <!-- Receipt Header -->
+                    <div class="flex justify-between items-center mt-6 pb-4 border-b">
+                        <h2 class="text-lg font-semibold text-gray-700">Receipt</h2>
+                        <div>
+                            <h2 class="text-sm font-medium text-gray-500">User ID: <span class="text-gray-700">FURNHV{{ user.id }}</span></h2>
+                        </div>
+                    </div>
+            
+                    <!-- Order Items -->
+                    <div class="mt-4 space-y-6">
+                        {% for order in orders %}
+                        <div class="flex items-center bg-gray-50 rounded-lg p-4 shadow-md">
+                            <!-- Product Image -->
+                            <div class="w-1/4">
+                                <img src="{{ order.product.image_0.url }}" alt="Product Image" class="rounded-lg w-full h-auto object-cover">
+                            </div>
+            
+                            <!-- Product Info -->
+                            <div class="w-1/2 px-4">
+                                <h3 class="text-lg font-semibold text-gray-800">{{ order.product.name }}</h3>
+                                <p class="text-sm text-gray-600 mt-1">
+                                    Size: <span class="font-medium">{{ order.product.size }}</span>, 
+                                    Color: <span class="font-medium">{{ order.product.color }}</span>
+                                </p >
+                                <p class="text-sm text-gray-600 mt-1">
+                                    Order ID: <span class="text-gray-700">{{ order.order.order_id }}</span>
+                                </p>
+                                <p class="text-xs text-gray-600 mt-1">
+                                    Paid: <span>{{order.order.paid}}</span>
+                                </p>
+                            </div>
+            
+                            <!-- Quantity & Price -->
+                            <div class="flex flex-col items-end w-1/4">
+                                <p class="text-sm text-gray-600">Quantity: <span class="font-semibold text-gray-800">{{ order.quantity }}</span></p>
+                                <p class="text-lg font-semibold text-red-500 mt-1">
+                                    ${{ order.total_price|floatformat:2 }}
+                                </p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+            
+                    <!-- Total Cost Section -->
+                    <div class="mt-6 bg-gray-100 rounded-lg p-4 shadow-md">
+                        <div class="flex justify-between items-center">
+                            <p class="text-sm text-gray-600 font-medium">Subtotal:</p>
+                            <p class="text-lg font-semibold text-gray-800">${{ subtotal|floatformat:2 }}</p>
+                        </div>
+                        <div class="flex justify-between items-center mt-2">
+                            <p class="text-sm text-gray-600 font-medium">Shipping Cost:</p>
+                            <p class="text-lg font-semibold text-gray-800">${{ shipping_cost|floatformat:2 }}</p>
+                        </div>
+                        <div class="flex justify-between items-center mt-4 border-t pt-4">
+                            <p class="text-lg font-semibold text-gray-700">Total:</p>
+                            <p class="text-xl font-bold text-red-500">${{ total|floatformat:2 }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </main>
 
-        <!-- WhatsApp Floating Button 
-        <a href="https://wa.me/+2348074625742" class="whatsapp-button" target="_blank">
-            <img src="https://cdn-icons-png.flaticon.com/128/220/220236.png" alt="WhatsApp" class="fixed bottom-5 right-5 text-white p-2 rounded-full shadow-lg transition duration-300" style="width: 70px; height: 70px;">
-        </a>
-    -->
         <footer class="mt-10 px-6 md:px-16 mb-10 md:mb-0">
             <div class="flex flex-col md:flex-row items-center justify-between w-full py-4 text-center md:text-left">
                 <!-- Social Icons (Centered on Small, Left on Medium & Large) -->
@@ -203,3 +257,4 @@
         </script> -->
     </body>
 <html>
+

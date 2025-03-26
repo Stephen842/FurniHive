@@ -2,7 +2,7 @@ from django.contrib import admin
 from tinymce.widgets import TinyMCE
 from django.db import models
 from django.db.models import Q
-from .models import MyUsers, Category, Product, Order, OrderItem
+from .models import MyUsers, Category, Product, CartItem, Order, OrderItem
 
 # Register your models here.
 
@@ -54,6 +54,12 @@ class ProductsAdmin(admin.ModelAdmin):
         return queryset, use_distinct
 
 
+class CartItemAdmin(admin.ModelAdmin):
+    list_display = ('user', 'product', 'quantity')
+    search_fields = ('user__name', 'product__name')  # Enable searching by user name or product name
+    list_filter = ('shipping',)
+
+
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
     extra = 1
@@ -82,7 +88,7 @@ class OrderAdmin(admin.ModelAdmin):
         queryset, use_distinct = super().get_search_results(request, queryset, search_term)
         
        # Search for orders where customer's name matches the search term
-        customer_orders = self.model.objects.filter(customer__name__icontains=search_term)
+        customer_orders = self.model.objects.filter(my_user__name__icontains=search_term)
 
         queryset |= customer_orders
         return queryset.distinct(), use_distinct
@@ -94,5 +100,6 @@ class OrderItemAdmin(admin.ModelAdmin):  # Separate Admin for OrderItem
 admin.site.register(MyUsers, UserAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductsAdmin)
+admin.site.register(CartItem, CartItemAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(OrderItem, OrderItemAdmin)

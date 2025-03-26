@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.conf.urls import handler404
+from django.conf.urls import handler404, handler500
 
 
 urlpatterns = [
@@ -30,8 +30,8 @@ urlpatterns = [
 ]
 
 #This is a flag for handling 404(Page not found) and 500(Server Errors)errors
-#handler404 = 'furniture.views.error_404'
-#handler500 = 'shop.views.error_500'
+handler404 = 'furniture.views.error_404'
+handler500 = 'furniture.views.error_500'
 
 # Serve media files during development
 if settings.DEBUG:

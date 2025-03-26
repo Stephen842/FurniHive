@@ -452,7 +452,7 @@ class VerifyPayment(View):
 
 
 @login_required
-def order_confirm(request, order_id):
+def Order_confirm(request, order_id):
     status = request.GET.get('status')  # Get the status from the URL
     tx_ref = request.GET.get('tx_ref')  # Get transaction reference
 
@@ -460,7 +460,7 @@ def order_confirm(request, order_id):
     order = Order.objects.filter(order_id=order_id).first()
 
     context = {
-        'title': 'Transaction Successful – Order Confirmed!',
+        'title': 'Payment Successful – Your Order is Confirmed!',
         'order_id': order_id,
         'status': status,  # Pass payment status
         'tx_ref': tx_ref,  # Pass transaction reference
@@ -479,3 +479,52 @@ def Payment_failed(request):
         'title': 'Oops! Payment Unsuccessful',
     }
     return render(request, 'pages/payment-cancel.html', context)
+
+
+@method_decorator(login_required, name='dispatch')
+class OrderView(View):
+    def get(self, request):
+
+        # Get orders directly from the database linked to the logged-in user
+        orders = OrderItem.objects.filter(order__my_user=request.user).order_by('-id')
+
+        if not orders.exists():
+            messages.info(request, 'You have no orders yet.')
+
+        # Calculate subtotal by summing all the prices
+        subtotal = sum(float(order.product.price) * order.quantity for order in orders)
+
+        shipping_cost = 2
+        total = subtotal + shipping_cost
+
+         # Attach computed total price to each order item
+        for order in orders:
+            order.total_price = float(order.product.price) * order.quantity
+
+
+        context = {
+                'orders': orders,
+                'title': 'Summary of Your Purchase',
+                'subtotal': subtotal,
+                'shipping_cost': shipping_cost,
+                'total': total,
+
+        }
+        return render(request, 'pages/orders.html', context)
+
+
+def error_404(request, exception):
+    context = {
+        'status_code': 404,
+        'error_message': 'Page Not Found',
+        'title': "Oops! The page you're looking for isn't available.",
+    }
+    return render(request, 'pages/404.html', context, status=404)
+
+def error_500(request):
+    context = {
+        'status_code': 500,
+        'error_message': 'Internal Server Error',
+        'title': '500 - Server Error',
+    }
+    return render(request, 'pages/500.html', context, status=500)
