@@ -255,7 +255,7 @@ class CheckOut(View):
                 'product_id': item.product.id,
                 'product_name': item.product.name,
                 'quantity': item.quantity,
-                'product_image': item.product.image_0,
+                'product_image': item.product.image_0.url if item.product.image_0 and hasattr(item.product.image_0, 'url') else None,
                 'product_price': product_price,
             })
 
