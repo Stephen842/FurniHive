@@ -1,24 +1,34 @@
 # FurniHive E-Commerce Furniture Store
 
-A simple furniture E-Commerce store built using Django for the backend and HTML and Tailwind CSS for the frontend. This project is designed to showcase furniture products with a minimalistic approach—no authentication, no cart system, just a clean product display with a WhatsApp toggle for direct inquiries.
+FurniHive is a fully functional E-commerce web app built using Django for the backend and HTML, Tailwind CSS with a touch of Javascript for the frontend. This project aims to provide a seamless shopping experience for users looking to purchase furniture online.
 
 Features
 
-*   1. Homepage – A simple and elegant landing page.
+*       1. Homepage – A Store landing page.
 
-    2. Product Display – Showcasing furniture items with images, names, descriptions, and prices.
+        2. Product Display – Showcasing furniture items with images, names, descriptions, and prices.
 
-    3. WhatsApp Inquiry – A toggle button allowing customers to directly chat with the seller via WhatsApp.
+        3. WhatsApp Inquiry – A toggle button allowing customers to directly chat with the seller via WhatsApp.
 
-    4. Tailwind CSS – Fully responsive and modern UI without additional JavaScript libraries.
+        4. Tailwind CSS – Fully responsive and modern UI with no additional JavaScript libraries, ensuring an elegant look and feel on all devices.
 
-    5. Django Backend – Manages product data and serves the frontend efficiently.
+        5. Django Backend – Manages product data and serves the frontend efficiently.
+
+        6. Authentication System – Users can sign in, sign out, and register to access personalized features.
+
+        7. Add to Cart – Customers can add items to their cart for easy checkout.
+
+        8. Checkout Process – Streamlined checkout process that includes entering shipping details and calculating the total cost.
+
+        9. Payment Gateway Integration (Flutterwave) – Secure payment integration via Flutterwave to handle payments online.
+
+        10. Search Feature – Users can search for furniture products by name or category.
 
 __Tech Stack__
 
 *    1. Backend: Django (Python)
 
-    2. Frontend: Tailwind CSS (HTML, CSS)
+    2. Frontend: Tailwind CSS (HTML, CSS) and Javascript
 
     3. Database: SQLite (Development)
 
@@ -61,4 +71,4 @@ __Installation & Setup__
 
 __Contact & Support__
 
-If you have any issues, feel free to open an issue in the repository or contact me directly at +2348074625742 or ugotachisomstephen@gmail.com
+If you have any issues, feel free to open an issue in the repository or contact me directly on whatsapp at +2348074625742 or ugotachisomstephen@gmail.com
