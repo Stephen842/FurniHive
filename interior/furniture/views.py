@@ -296,9 +296,47 @@ class CheckOut(View):
             request.POST.get('city'),
             request.POST.get('zipcode'),
         )
-        if not state or not phone:
-            messages.error(request, 'State and phone are required.')
-            return redirect('checkout')
+
+        # Check if any field is missing
+        missing_fields = []
+        if not name:
+            missing_fields.append('name')
+        if not email:
+            missing_fields.append('email')
+        if not phone:
+            missing_fields.append('phone')
+        if not country:
+            missing_fields.append('country')
+        if not state:
+            missing_fields.append('state')
+        if not city:
+            missing_fields.append('city')
+        if not zipcode:
+            missing_fields.append('zipcode')
+
+        if missing_fields:
+            messages.error(request, f'The following fields are required: {", ".join(missing_fields)}.')
+            
+            # Fetch cart details if any fields are missing
+            user = request.user
+            shipping_cost = 2
+            cart_items, cart_details, subtotal = self.get_cart_details(user)
+            order_price = subtotal + shipping_cost
+
+            # Pass entered data back into the context for the template to display
+            return render(request, 'pages/checkout.html', {
+                'name': name,
+                'email': email,
+                'phone': phone,
+                'country': country,
+                'state': state,
+                'city': city,
+                'zipcode': zipcode,
+                'cart_items': cart_details,
+                'subtotal': subtotal,
+                'shipping_cost': shipping_cost,
+                'total': order_price,
+            })
         
         user = request.user
         shipping_cost = 2

@@ -173,49 +173,49 @@
                 <div class="flex flex-col lg:flex-row gap-8 px-4 md:px-8 lg:px-16">
                     <!-- Shipping Form -->
                     <div class="bg-white shadow-xl w-full lg:w-2/3 rounded-lg p-8">
-                        <form method="post" id="shippingform" action="{% url 'checkout' %}" class="space-y-6">
+                        <form method="post" id="shippingform" action="{% url 'checkout' %}" class="space-y-6 text-gray-700">
                             {% csrf_token %}
                             
                             <!-- Full Name -->
                             <div class="mb-4">
                                 <label for="name" class="block text-sm font-medium text-gray-700">Full Name<sup class="text-red-600">*</sup></label>
-                                <input type="text" name="name" id="name" required class="mt-1 p-3 border border-gray-300 rounded-md w-full outline-none">
+                                <input type="text" name="name" id="name" value="{{ name|default:'' }}" required class="mt-1 p-3 border border-gray-300 rounded-md w-full outline-none">
                             </div>
             
                             <!-- Email Address -->
                             <div class="mb-4">
                                 <label for="email" class="block text-sm font-medium text-gray-700">Email Address<sup class="text-red-600">*</sup></label>
-                                <input type="email" name="email" id="email" required class="mt-1 p-3 border border-gray-300 rounded-md w-full outline-none">
+                                <input type="email" name="email" id="email" value="{{ email|default:'' }}" required class="mt-1 p-3 border border-gray-300 rounded-md w-full outline-none">
                             </div>
             
                             <!-- Phone Number -->
                             <div class="mb-4">
                                 <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number<sup class="text-red-600">*</sup></label>
-                                <input type="tel" name="phone" id="phone" required class="mt-1 p-3 border border-gray-300 rounded-md w-full outline-none" placeholder="Begin with a country code">
+                                <input type="tel" name="phone" id="phone" value="{{ phone|default:'' }}" required class="mt-1 p-3 border border-gray-300 rounded-md w-full outline-none" placeholder="Begin with a country code">
                             </div>
             
                             <!-- Country -->
                             <div class="mb-4">
                                 <label for="country" class="block text-sm font-medium text-gray-700">Country<sup class="text-red-600">*</sup></label>
-                                <input type="text" name="country" id="country" required class="mt-1 p-3 border border-gray-300 rounded-md w-full outline-none">
+                                <input type="text" name="country" id="country" value="{{ country|default:'' }}" required class="mt-1 p-3 border border-gray-300 rounded-md w-full outline-none">
+                            </div>
+
+                            <!-- State -->
+                            <div class="mb-4">
+                                <label for="state" class="block text-sm font-medium text-gray-700">State<sup class="text-red-600">*</sup></label>
+                                <input type="text" name="state" id="state" value="{{ state|default:'' }}" required class="mt-1 p-3 border border-gray-300 rounded-md w-full outline-none">
                             </div>
             
                             <!-- City -->
                             <div class="mb-4">
                                 <label for="city" class="block text-sm font-medium text-gray-700">City<sup class="text-red-600">*</sup></label>
-                                <input type="text" name="city" id="city" required class="mt-1 p-3 border border-gray-300 rounded-md w-full outline-none">
-                            </div>
-            
-                            <!-- State -->
-                            <div class="mb-4">
-                                <label for="state" class="block text-sm font-medium text-gray-700">State<sup class="text-red-600">*</sup></label>
-                                <input type="text" name="state" id="state" required class="mt-1 p-3 border border-gray-300 rounded-md w-full outline-none">
+                                <input type="text" name="city" id="city" value="{{ city|default:'' }}" required class="mt-1 p-3 border border-gray-300 rounded-md w-full outline-none">
                             </div>
             
                             <!-- Zipcode -->
                             <div class="mb-4">
                                 <label for="zipcode" class="block text-sm font-medium text-gray-700">Zipcode</label>
-                                <input type="text" name="zipcode" id="zipcode" required class="mt-1 p-3 border border-gray-300 rounded-md w-full outline-none">
+                                <input type="text" name="zipcode" id="zipcode" value="{{ zipcode|default:'' }}" required class="mt-1 p-3 border border-gray-300 rounded-md w-full outline-none">
                             </div>
                         </form>
                     </div>
