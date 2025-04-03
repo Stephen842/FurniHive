@@ -51,7 +51,7 @@ class MyUsers(AbstractBaseUser, PermissionsMixin):  # Add PermissionsMixin here
     name = models.CharField(max_length=100, blank=False)
     username = models.CharField(max_length=100, unique=True, blank=False)
     email = models.EmailField(unique=True, blank=False)
-    phone = PhoneNumberField(region='US', unique=True)
+    phone = models.CharField(max_length=25, unique=True, blank=False, null=False)
     country = CountryField(blank_label='Select Country',)
     
     is_active = models.BooleanField(default=True)

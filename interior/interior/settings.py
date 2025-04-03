@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'phonenumber_field',
     'django_countries',
-
 ]
 
 AUTHENTICATION_BACKENDS = [

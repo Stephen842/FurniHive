@@ -78,12 +78,20 @@
     
                     <div>
                         <label class="block text-gray-700 font-medium">Phone Number</label>
-                        {{ form.phone|attr:"placeholder = Begin with a country code"|add_class:"w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-yellow-300"}}
+                        <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden bg-white">
+                            {{ form.phone|attr:"placeholder: Phone number - Begin with country code"|add_class:"w-full px-4 py-2 focus:outline-none focus:ring-1 focus:ring-yellow-300" }}
+                        </div>
                     </div>
     
                     <div>
                         <label class="block text-gray-700 font-medium">Password</label>
                         {{ form.password1|add_class:"w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-yellow-300"}}
+
+                        <div class="mt-2 text-xs">
+                            <p class="text-gray-500">Hint: Include at least one uppercase letter.</p>
+                            <p class="text-gray-500">Hint: Include at least one number.</p>
+                            <p class="text-gray-500">Hint: Include at least one special character (!@#$%^&*()-_=+).</p>
+                        </div>
                     </div>
     
                     <div>

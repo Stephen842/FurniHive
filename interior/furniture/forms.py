@@ -1,8 +1,10 @@
 from django import forms
-from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
+from phonenumber_field.widgets import PhoneNumberPrefixWidget
+from phonenumber_field.formfields import PhoneNumberField
+from django.forms.widgets import TextInput
 from .models import MyUsers, CartItem
 
 class UserForm(forms.ModelForm):
@@ -19,13 +21,22 @@ class UserForm(forms.ModelForm):
     )
 
     country = CountryField(blank_label='Select Country').formfield(
-        widget=CountrySelectWidget(attrs={'class': 'form-control'}),
+        widget=CountrySelectWidget(),
         required=True
+    )
+
+    phone = PhoneNumberField(
+        initial="+1",
+        required=True,
     )
 
     class Meta:
         model = MyUsers
         fields = ['name', 'username', 'email', 'phone', 'country', 'password1', 'password2']
+
+        widgets = {
+            'phone': PhoneNumberPrefixWidget(widgets=[TextInput()]),
+        }
 
     def clean_name(self):
         name = self.cleaned_data.get('name')
@@ -48,34 +59,52 @@ class UserForm(forms.ModelForm):
         return email
 
     def clean_phone(self):
-        phone = self.cleaned_data.get('phone')
-        if len(phone) < 8:
-            raise forms.ValidationError('Phone number is too short')
+        phone = self.cleaned_data.get("phone")
+
+
+        if not phone:
+            raise forms.ValidationError("Phone number is required.")
+
+        phone = str(phone).strip().replace(" ", "")
+
+        # Remove leading zero if present
+        if phone.startswith("0"):
+            phone = phone[1:]
+        
+        # Check if phone number already exists
         if MyUsers.objects.filter(phone=phone).exists():
             raise forms.ValidationError('Phone Number Already Registered...')
+
         return phone
    
     def clean_password1(self):
         password = self.cleaned_data.get('password1')
+        hint_messages = []
+
         if not password:
             raise forms.ValidationError("Password is required.")
 
-        # Ensure password has at least one uppercase, one number, and one special character
+        # Check for uppercase letter
         if not any(char.isupper() for char in password):
-            raise forms.ValidationError("Password must contain at least one uppercase letter.")
+            hint_messages.append("Include at least one uppercase letter.")
+
+        # Check for a number
         if not any(char.isdigit() for char in password):
-            raise forms.ValidationError("Password must contain at least one number.")
+            hint_messages.append("Include at least one number.")
+
+        # Check for a special character
         if not any(char in "!@#$%^&*()-_=+" for char in password):
-            raise forms.ValidationError("Password must contain at least one special character.")
+            hint_messages.append("Include at least one special character (!@#$%^&*()-_=+).")
+
+        # If there are any hints, return a combined message instead of raising an error immediately
+        if hint_messages:
+            raise forms.ValidationError("\n".join(hint_messages))
 
         return password
 
     def clean_password2(self):
         password1 = self.cleaned_data.get('password1')
         password2 = self.cleaned_data.get('password2')
-
-        if not password1 or not password2:
-            raise forms.ValidationError("Both password fields are required.")
 
         if password1 != password2:
             raise forms.ValidationError("Passwords do not match.")

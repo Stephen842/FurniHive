@@ -19,11 +19,15 @@ from .forms import UserForm, SigninForm, CartItemForm
 # Create your views here.
         
 def signup(request):
+    if request.user.is_authenticated:
+        # Redirect to store page if user is already logged in
+        return redirect('store')
+
     if request.method == "POST":
         form = UserForm(request.POST)
         if form.is_valid():
             form.save() # Password is already hashed in the form
-            return redirect(request.GET.get('next', 'store'))
+            return redirect(request.GET.get('next', 'signin'))
     else:
         form = UserForm()
 
@@ -37,6 +41,10 @@ def signup(request):
 
 
 def signin(request):
+    if request.user.is_authenticated:
+        # Redirect to store page if user is already logged in
+        return redirect('store')
+
     if request.method == 'POST':
         form = SigninForm(request.POST)
         if form.is_valid():
